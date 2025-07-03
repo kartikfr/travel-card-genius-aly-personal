@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -149,8 +148,7 @@ const Cards = () => {
         {/* Back Button */}
         <Button 
           onClick={() => navigate('/')}
-          variant="outline"
-          className="mb-6 border-blue-400/50 text-blue-300 hover:bg-blue-500/20 hover:border-blue-300"
+          className="mb-6 bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg border-none"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Home
@@ -303,8 +301,11 @@ const Cards = () => {
                   
                   <Button 
                     variant="outline"
-                    className="w-full border-blue-400/50 text-blue-300 hover:bg-blue-500/20 hover:border-blue-300 py-2 text-sm"
-                    onClick={() => navigate(`/card/${card.id}`)}
+                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 text-sm shadow-md border-none"
+                    onClick={() => {
+                      console.log('Navigating to card detail with ID:', card.id, 'Type:', typeof card.id);
+                      navigate(`/card/${card.id}`);
+                    }}
                   >
                     <ExternalLink className="h-3 w-3 mr-1" />
                     View Details

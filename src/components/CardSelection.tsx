@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -56,6 +55,12 @@ export const CardSelection = ({ onRecommendations }: CardSelectionProps) => {
       // Get all cards from API response (they come in priority order: 0, 1, 2, 3, 4...)
       let allCards = personalizedData.savings || [];
       console.log(`📊 Total cards from API (in priority order): ${allCards.length}`);
+      
+      // Debug: Log first few cards to understand structure
+      if (allCards.length > 0) {
+        console.log('🔍 Sample card structure:', allCards[0]);
+        console.log('🔍 Sample card travel benefits:', allCards[0]?.travel_benefits);
+      }
 
       // Apply frontend filtering based on lounge requirements while maintaining priority order
       const filteredCards = filterCardsByLoungeRequirements(allCards, preferences);
@@ -64,6 +69,17 @@ export const CardSelection = ({ onRecommendations }: CardSelectionProps) => {
       // Take top 6 cards that meet the criteria (they maintain their priority order)
       const finalCards = filteredCards.slice(0, 6);
       console.log(`🏆 Final cards to display (top 6 that meet criteria): ${finalCards.length}`);
+
+      // Enhanced debugging for final cards
+      if (finalCards.length > 0) {
+        console.log('✅ FINAL CARDS TO DISPLAY:');
+        finalCards.forEach((card, index) => {
+          console.log(`${index + 1}. ${card.card_name || card.name}`, {
+            domestic_lounges: card.travel_benefits?.domestic_lounges_unlocked || 'N/A',
+            international_lounges: card.travel_benefits?.international_lounges_unlocked || 'N/A'
+          });
+        });
+      }
 
       // Handle different scenarios based on filtered results
       if (finalCards.length === 0) {

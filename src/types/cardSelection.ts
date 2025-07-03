@@ -1,4 +1,3 @@
-
 export interface UserPreferences {
   hotels_annual: number[];
   flights_annual: number[];
@@ -16,6 +15,8 @@ export interface TravelBenefits {
 }
 
 export interface Card {
-  card_name: string;
+  card_name?: string;
+  name?: string;
+  image?: string;
   travel_benefits?: TravelBenefits;
 }

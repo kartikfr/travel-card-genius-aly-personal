@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +10,7 @@ export const AIWidget = () => {
   const [messages, setMessages] = useState([
     {
       type: 'bot',
-      content: "Hi! I'm Aly's travel assistant. Ask me about credit cards, travel deals, or tips! 🤖✈️"
+      content: "Hey, I'm Aly! Ask me anything about travel credit cards, rewards, or the best deals—I'm here to help you travel smarter! ✈️💳"
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
@@ -55,7 +54,7 @@ export const AIWidget = () => {
       console.error('Error getting AI response:', error);
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: "Sorry, having connection issues. Please ask about travel cards, cashback offers, or recommendations!"
+        content: "Sorry, looks like I'm having trouble connecting right now. Try again in a bit, or ask me about travel cards, cashback, or my favorite recommendations!"
       }]);
       
       toast({
@@ -82,14 +81,15 @@ export const AIWidget = () => {
         <div className="fixed bottom-6 right-6 z-50">
           <Button
             onClick={() => setIsOpen(true)}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full p-4 shadow-2xl transform transition-all duration-300 hover:scale-110"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full p-6 shadow-2xl transform transition-all duration-300 hover:scale-110"
           >
-            <MessageCircle className="h-6 w-6" />
+            <MessageCircle className="h-14 w-14" />
           </Button>
           
           {/* Floating Message */}
-          <div className="absolute bottom-16 right-0 bg-white/95 backdrop-blur-sm text-gray-800 px-4 py-3 rounded-lg shadow-xl max-w-xs">
-            <p className="text-sm font-medium">🤖 Chat with Aly for instant travel card advice!</p>
+          <div className="absolute bottom-16 right-0 bg-white/95 backdrop-blur-sm text-gray-800 px-5 py-3 rounded-lg shadow-xl flex items-center space-x-3 max-w-xs">
+            <span className="text-2xl">🧑‍💼</span>
+            <span className="text-lg font-bold whitespace-nowrap">Aly is here!</span>
           </div>
         </div>
       )}
@@ -101,8 +101,8 @@ export const AIWidget = () => {
             <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Bot className="h-4 w-4" />
-                  <CardTitle className="text-base">Aly's Travel Assistant</CardTitle>
+                  <Bot className="h-8 w-8" />
+                  <CardTitle className="text-base">Aly is here to help</CardTitle>
                 </div>
                 <Button
                   variant="ghost"
@@ -114,7 +114,7 @@ export const AIWidget = () => {
                 </Button>
               </div>
               <p className="text-xs text-blue-100">
-                Ask me about travel cards & deals!
+                Ask me anything about travel cards, rewards, or trips!
               </p>
             </CardHeader>
 
@@ -129,8 +129,8 @@ export const AIWidget = () => {
                     <div className={`flex items-start space-x-2 max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center ${message.type === 'user' ? 'bg-blue-500' : 'bg-purple-500'}`}>
                         {message.type === 'user' ? 
-                          <User className="h-3 w-3 text-white" /> : 
-                          <Bot className="h-3 w-3 text-white" />
+                          <User className="h-5 w-5 text-white" /> : 
+                          <Bot className="h-5 w-5 text-white" />
                         }
                       </div>
                       <div className={`px-3 py-2 rounded-lg ${message.type === 'user' 
@@ -147,7 +147,7 @@ export const AIWidget = () => {
                   <div className="flex justify-start">
                     <div className="flex items-start space-x-2">
                       <div className="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center">
-                        <Bot className="h-3 w-3 text-white" />
+                        <Bot className="h-5 w-5 text-white" />
                       </div>
                       <div className="bg-gray-100 px-3 py-2 rounded-lg">
                         <div className="flex space-x-1">

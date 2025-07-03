@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -81,6 +80,27 @@ export const RecommendedCards = ({ cards }: RecommendedCardsProps) => {
                       <IndianRupee className="h-4 w-4" />
                       {card.total_saving_yearly?.toLocaleString()}
                     </span>
+                  </div>
+                )}
+
+                {/* Lounge Access Information */}
+                {card.travel_benefits && (
+                  <div className="bg-blue-500/10 border border-blue-400/20 rounded-lg p-3 space-y-2">
+                    <div className="text-blue-300 text-sm font-medium text-center">Lounge Access</div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="text-center">
+                        <div className="text-gray-300">Domestic</div>
+                        <div className="text-white font-bold">
+                          {card.travel_benefits.domestic_lounges_unlocked || 0} visits
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-gray-300">International</div>
+                        <div className="text-white font-bold">
+                          {card.travel_benefits.international_lounges_unlocked || 0} visits
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )}
 

@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Quote } from "lucide-react";
 
@@ -9,7 +8,7 @@ export const Testimonials = () => {
       location: "Mumbai",
       rating: 5,
       comment: "Thanks to Aly's recommendations, I got the HDFC Infinia Card. Saved ₹50,000+ on my Europe trip with lounge access and no forex fees!",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      image: "/priya-sharma.jpg",
       card: "HDFC Infinia Card"
     },
     {
