@@ -1,35 +1,89 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, CreditCard, IndianRupee, TrendingUp } from "lucide-react";
+import { Star, CreditCard, IndianRupee, TrendingUp, ExternalLink } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useRef, useEffect } from "react";
 
 interface RecommendedCardsProps {
   cards: any[];
+  userPreferences?: any;
 }
 
-export const RecommendedCards = ({ cards }: RecommendedCardsProps) => {
+// Add a helper to calculate net saving
+const calculateNetSaving = (card: any) => {
+  const total = card.total_saving_yearly || card.total_savings_yearly || 0;
+  const fee = card.joining_fees || 0;
+  return total - fee;
+};
+
+export const recommendedCardsRef = { current: null as HTMLDivElement | null };
+
+export const RecommendedCards = ({ cards, userPreferences }: RecommendedCardsProps) => {
+  const navigate = useNavigate();
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    recommendedCardsRef.current = sectionRef.current;
+  }, []);
+
   if (!cards || cards.length === 0) {
     return null;
   }
 
+  const handleViewDetails = (selectedCardIndex: number) => {
+    // Navigate to the detailed breakdown page with all cards data
+    navigate('/card-breakdown', { 
+      state: { 
+        cards: cards.slice(0, 6),
+        userPreferences: userPreferences,
+        selectedCardIndex: selectedCardIndex
+      } 
+    });
+  };
+
   return (
-    <section className="py-20 px-6">
+    <section ref={sectionRef} className="py-20 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Your Top 6 Travel Cards
+            Your Top 6 Travel Cards 💰
           </h2>
-          <p className="text-xl text-gray-300">
-            Handpicked based on your spending patterns and travel preferences
+          <p className="text-xl text-gray-300 mb-4">
+            Handpicked based on your spending patterns with exclusive rewards on approval
           </p>
+          <div className="flex items-center justify-center space-x-4 text-sm text-gray-400">
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500"></div>
+              <span>Top 3 - Best Matches</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600"></div>
+              <span>Great Alternatives</span>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {cards.slice(0, 6).map((card, index) => (
             <Card 
               key={index}
-              className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl group"
+              className={`bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl group relative ${
+                index < 3 ? 'ring-2 ring-yellow-400/30' : ''
+              }`}
             >
+              {/* Priority Badge */}
+              <div className="absolute -top-3 -left-3 z-10 flex items-center space-x-2">
+                <div className={`text-white font-bold text-lg w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white/20 ${
+                  index < 3 
+                    ? 'bg-gradient-to-r from-yellow-500 to-orange-500' 
+                    : 'bg-gradient-to-r from-blue-600 to-purple-600'
+                }`}>
+                  #{index + 1}
+                </div>
+                <div className="bg-green-500/90 text-white font-bold text-xs px-3 py-1 rounded-full shadow border border-green-400/50">
+                  Net Saving: ₹{calculateNetSaving(card).toLocaleString()}
+                </div>
+              </div>
               <CardHeader className="text-center">
                 {/* Card Image */}
                 {card.image && (
@@ -51,6 +105,11 @@ export const RecommendedCards = ({ cards }: RecommendedCardsProps) => {
                 <CardTitle className="text-xl text-white group-hover:text-blue-300 transition-colors">
                   {card.name || card.card_name || 'Premium Travel Card'}
                 </CardTitle>
+                <div className={`text-sm font-medium ${
+                  index < 3 ? 'text-yellow-400' : 'text-blue-400'
+                }`}>
+                  Priority Rank #{index + 1}
+                </div>
                 
                 {card.card_type && (
                   <Badge variant="secondary" className="bg-blue-500/20 text-blue-300 border-blue-400/30">
@@ -104,37 +163,59 @@ export const RecommendedCards = ({ cards }: RecommendedCardsProps) => {
                   </div>
                 )}
 
-                {/* Rating */}
-                {card.rating && (
+                {/* Reward (Commission) */}
+                {card.commission && (
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-300">Rating:</span>
+                    <span className="text-gray-300">Reward:</span>
                     <div className="flex items-center space-x-1">
-                      <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-                      <span className="text-white font-bold">
-                        {typeof card.rating === 'number' ? card.rating.toFixed(1) : card.rating}
+                      <TrendingUp className="h-4 w-4 text-green-400" />
+                      <span className="text-green-400 font-bold">
+                        {card.commission_type === 'percentage' 
+                          ? `${card.commission}% Cashback`
+                          : `₹${card.commission} Reward`
+                        }
                       </span>
                     </div>
                   </div>
                 )}
 
-                {/* Commission Info */}
-                {card.commissin && (
-                  <div className="bg-green-500/20 border border-green-400/30 rounded-lg p-3 text-center">
-                    <span className="text-green-300 text-sm font-medium">
-                      Earn ₹{card.commissin} cashback on approval
-                    </span>
+                {/* Commission Info - Enhanced Display */}
+                {card.commission && (
+                  <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-400/30 rounded-lg p-4 text-center">
+                    <div className="text-green-300 text-sm font-medium mb-1">
+                      💰 Your Reward on Approval
+                    </div>
+                    <div className="text-green-400 font-bold text-lg">
+                      {card.commission_type === 'percentage' 
+                        ? `${card.commission}% Cashback`
+                        : `₹${card.commission} Reward`
+                      }
+                    </div>
+                    <div className="text-gray-400 text-xs mt-1">
+                      Apply through us & earn instantly!
+                    </div>
                   </div>
                 )}
 
                 {/* CTA Button */}
                 <Button 
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
                   onClick={() => {
                     // This would typically redirect to CashKaro affiliate link
                     window.open('#', '_blank');
                   }}
                 >
-                  Apply Now
+                  {card.commission ? `Apply & Earn ₹${card.commission}` : 'Apply Now'}
+                </Button>
+
+                {/* View Details Button */}
+                <Button 
+                  variant="outline"
+                  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 text-sm shadow-md border-none"
+                  onClick={() => handleViewDetails(index)}
+                >
+                  <ExternalLink className="h-3 w-3 mr-1" />
+                  View Details
                 </Button>
 
                 <p className="text-xs text-gray-400 text-center">
@@ -145,6 +226,15 @@ export const RecommendedCards = ({ cards }: RecommendedCardsProps) => {
           ))}
         </div>
 
+        {/* CTA for more cards */}
+        <div className="text-center mt-12">
+          <Button 
+            variant="outline" 
+            className="border-blue-400/50 text-blue-300 hover:bg-blue-500/20 hover:border-blue-300 px-8 py-3"
+          >
+            View All Travel Cards
+          </Button>
+        </div>
       </div>
     </section>
   );

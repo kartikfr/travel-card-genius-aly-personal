@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { PreferenceSliders } from "@/components/PreferenceSliders";
-import { filterCardsByLoungeRequirements } from "@/utils/cardFiltering";
+import { filterCardsByLoungeRequirements, fetchCommissionData } from "@/utils/cardFiltering";
 import { UserPreferences, CardSelectionProps } from "@/types/cardSelection";
+import { recommendedCardsRef } from "@/components/RecommendedCards";
 
 export const CardSelection = ({ onRecommendations }: CardSelectionProps) => {
   const { toast } = useToast();
@@ -81,6 +82,11 @@ export const CardSelection = ({ onRecommendations }: CardSelectionProps) => {
         });
       }
 
+      // Fetch commission data from BankKaro API and enhance cards
+      console.log('💰 Fetching commission data for enhanced user experience...');
+      const enhancedCards = await fetchCommissionData(finalCards);
+      console.log('🎉 Cards enhanced with commission data:', enhancedCards.length);
+
       // Handle different scenarios based on filtered results
       if (finalCards.length === 0) {
         toast({
@@ -103,8 +109,15 @@ export const CardSelection = ({ onRecommendations }: CardSelectionProps) => {
         });
       }
 
-      // Pass the filtered cards to display
-      onRecommendations(preferences, finalCards);
+      // Pass the enhanced cards to display
+      onRecommendations(preferences, enhancedCards);
+
+      // Scroll to RecommendedCards section after a short delay
+      setTimeout(() => {
+        if (recommendedCardsRef.current) {
+          recommendedCardsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 200);
 
     } catch (error) {
       console.error('❌ Error fetching recommendations:', error);
@@ -126,7 +139,7 @@ export const CardSelection = ({ onRecommendations }: CardSelectionProps) => {
             Quick Travel Style Check! ✈️
           </h2>
           <p className="text-lg text-gray-300">
-            Just slide to tell us about your travel habits (takes 30 seconds!) 
+            Just slide to tell us about your travel habits and discover cards with exclusive rewards! (takes 30 seconds!) 
           </p>
         </div>
 
@@ -148,7 +161,7 @@ export const CardSelection = ({ onRecommendations }: CardSelectionProps) => {
                 disabled={isLoading}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-full text-lg transform transition-all duration-300 hover:scale-105"
               >
-                {isLoading ? 'Finding Your Perfect Cards... 🔍' : 'Get My Dream Cards! 🚀'}
+                {isLoading ? 'Finding Your Perfect Cards & Rewards... 🔍' : 'Get My Dream Cards! 💰'}
               </Button>
             </div>
           </CardContent>

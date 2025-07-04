@@ -117,6 +117,8 @@ const Offers = () => {
   useEffect(() => {
     setOffers(mockOffers);
     setFilteredOffers(mockOffers);
+    // Scroll to top on mount
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
@@ -204,7 +206,7 @@ const Offers = () => {
         <Button 
           onClick={() => navigate('/')}
           variant="outline"
-          className="mb-6 border-blue-400/50 text-blue-300 hover:bg-blue-500/20 hover:border-blue-300"
+          className="mb-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold border-none"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Home
@@ -286,65 +288,66 @@ const Offers = () => {
         {/* Offers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredOffers.map((offer) => (
-            <Card 
+            <Card
               key={offer.id}
-              className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl group overflow-hidden"
+              className="bg-white/10 backdrop-blur-lg border-white/20 transition-transform transition-shadow duration-300 transform hover:scale-105 hover:shadow-2xl group overflow-hidden cursor-pointer"
+              onClick={() => window.open('https://cashkaro.com/', '_blank')}
             >
-              <CardHeader className="relative">
-                {/* Cashback Badge */}
-                <div className="absolute top-4 right-4 z-10">
-                  <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-lg px-3 py-1">
-                    {offer.cashback} Cashback 🎁
-                  </Badge>
-                </div>
-
-                {/* Flat Off Badge */}
+              <div className="relative">
                 {offer.flat_off && (
-                  <div className="absolute top-4 left-4 z-10">
-                    <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold px-2 py-1">
-                      ₹{offer.flat_off} OFF
+                  <span className="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow">₹{offer.flat_off} OFF</span>
+                )}
+                <CardHeader className="relative">
+                  {/* Cashback Badge */}
+                  <div className="absolute top-4 right-4 z-10">
+                    <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-lg px-3 py-1">
+                      {offer.cashback} Cashback 🎁
                     </Badge>
                   </div>
-                )}
 
-                <div className="flex items-center space-x-3 mb-3">
-                  <div className={`p-2 rounded-lg ${getCategoryColor(offer.category)}`}>
-                    {getCategoryIcon(offer.category)}
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className={`p-2 rounded-lg ${getCategoryColor(offer.category)}`}>
+                      {getCategoryIcon(offer.category)}
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl text-white group-hover:text-blue-300 transition-colors">
+                        {offer.brand_name}
+                      </CardTitle>
+                      <p className="text-blue-300 font-medium">{offer.title}</p>
+                    </div>
                   </div>
-                  <div>
-                    <CardTitle className="text-xl text-white group-hover:text-blue-300 transition-colors">
-                      {offer.brand_name}
-                    </CardTitle>
-                    <p className="text-blue-300 font-medium">{offer.title}</p>
+                </CardHeader>
+
+                <CardContent className="space-y-4 pt-8">
+                  <p className="text-gray-300 leading-relaxed">
+                    {offer.description}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-4">
+                    <Button
+                      variant="link"
+                      className="text-blue-400 hover:text-blue-300 p-0 h-auto text-sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(offer.terms_link, '_blank');
+                      }}
+                    >
+                      Terms & Conditions
+                      <ExternalLink className="h-3 w-3 ml-1" />
+                    </Button>
                   </div>
-                </div>
-              </CardHeader>
 
-              <CardContent className="space-y-4">
-                <p className="text-gray-300 leading-relaxed">
-                  {offer.description}
-                </p>
-
-                <div className="flex items-center justify-between pt-4">
-                  <Button
-                    variant="link"
-                    className="text-blue-400 hover:text-blue-300 p-0 h-auto text-sm"
-                    onClick={() => window.open(offer.terms_link, '_blank')}
+                  <Button 
+                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open('#', '_blank');
+                    }}
                   >
-                    Terms & Conditions
-                    <ExternalLink className="h-3 w-3 ml-1" />
+                    Grab This Deal! 🔥
                   </Button>
-                </div>
-
-                <Button 
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
-                  onClick={() => {
-                    window.open('#', '_blank');
-                  }}
-                >
-                  Grab This Deal! 🔥
-                </Button>
-              </CardContent>
+                </CardContent>
+              </div>
             </Card>
           ))}
         </div>

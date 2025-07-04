@@ -1,4 +1,3 @@
-
 import { Hero } from "@/components/Hero";
 import { TopTravelCards } from "@/components/TopTravelCards";
 import { CardSelection } from "@/components/CardSelection";
@@ -26,7 +25,12 @@ const Index = () => {
       <Hero />
       <TopTravelCards />
       <CardSelection onRecommendations={handleCardRecommendations} />
-      {showRecommendations && <RecommendedCards cards={recommendedCards} />}
+      {showRecommendations && (
+        <RecommendedCards 
+          cards={recommendedCards} 
+          userPreferences={userPreferences}
+        />
+      )}
       <TravelDeals />
       <Testimonials />
       <SocialProof />
