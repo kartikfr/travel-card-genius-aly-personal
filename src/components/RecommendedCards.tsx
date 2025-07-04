@@ -224,17 +224,7 @@ export const RecommendedCards = ({ cards, userPreferences }: RecommendedCardsPro
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        {/* CTA for more cards */}
-        <div className="text-center mt-12">
-          <Button 
-            variant="outline" 
-            className="border-blue-400/50 text-blue-300 hover:bg-blue-500/20 hover:border-blue-300 px-8 py-3"
-          >
-            View All Travel Cards
-          </Button>
-        </div>
+        </div>        
       </div>
     </section>
   );
