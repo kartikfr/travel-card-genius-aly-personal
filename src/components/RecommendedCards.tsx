@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, CreditCard, IndianRupee, TrendingUp, ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import { ApplicationForm } from "./ApplicationForm";
 
 interface RecommendedCardsProps {
   cards: any[];
@@ -22,6 +23,9 @@ export const recommendedCardsRef = { current: null as HTMLDivElement | null };
 export const RecommendedCards = ({ cards, userPreferences }: RecommendedCardsProps) => {
   const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement | null>(null);
+  const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
+  
   useEffect(() => {
     recommendedCardsRef.current = sectionRef.current;
   }, []);
@@ -39,6 +43,11 @@ export const RecommendedCards = ({ cards, userPreferences }: RecommendedCardsPro
         selectedCardIndex: selectedCardIndex
       } 
     });
+  };
+
+  const handleApplyNow = (card: any) => {
+    setSelectedCard(card);
+    setIsApplicationFormOpen(true);
   };
 
   return (
@@ -200,10 +209,7 @@ export const RecommendedCards = ({ cards, userPreferences }: RecommendedCardsPro
                 {/* CTA Button */}
                 <Button 
                   className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
-                  onClick={() => {
-                    // This would typically redirect to CashKaro affiliate link
-                    window.open('#', '_blank');
-                  }}
+                  onClick={() => handleApplyNow(card)}
                 >
                   {card.commission ? `Apply & Earn ₹${card.commission}` : 'Apply Now'}
                 </Button>
@@ -226,6 +232,13 @@ export const RecommendedCards = ({ cards, userPreferences }: RecommendedCardsPro
           ))}
         </div>        
       </div>
+      
+      {/* Application Form Dialog */}
+      <ApplicationForm
+        isOpen={isApplicationFormOpen}
+        onClose={() => setIsApplicationFormOpen(false)}
+        cardName={selectedCard?.name || selectedCard?.card_name || 'Travel Card'}
+      />
     </section>
   );
 };

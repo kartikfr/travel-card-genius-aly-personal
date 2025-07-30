@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, CreditCard, IndianRupee, ExternalLink } from "lucide-react";
+import { ApplicationForm } from "./ApplicationForm";
 import { useNavigate } from "react-router-dom";
 
 interface TravelCard {
@@ -26,6 +27,8 @@ export const TopTravelCards = () => {
   const [cards, setCards] = useState<TravelCard[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
 
   useEffect(() => {
     fetchTopCards();
@@ -77,6 +80,11 @@ export const TopTravelCards = () => {
     } else {
       return `₹${commission} Reward`;
     }
+  };
+
+  const handleApplyNow = (card: any) => {
+    setSelectedCard(card);
+    setIsApplicationFormOpen(true);
   };
 
   if (loading) {
@@ -177,7 +185,7 @@ export const TopTravelCards = () => {
                 <div className="space-y-2">
                   <Button 
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-2 text-sm"
-                    onClick={() => window.open('#', '_blank')}
+                    onClick={() => handleApplyNow(card)}
                   >
                     Apply Now 🚀
                   </Button>
@@ -205,6 +213,13 @@ export const TopTravelCards = () => {
           </Button>
         </div>
       </div>
+      
+      {/* Application Form Dialog */}
+      <ApplicationForm
+        isOpen={isApplicationFormOpen}
+        onClose={() => setIsApplicationFormOpen(false)}
+        cardName={selectedCard?.name || 'Travel Card'}
+      />
     </section>
   );
 };

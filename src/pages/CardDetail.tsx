@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Star, CreditCard, IndianRupee, ExternalLink, Gift, Plane, Hotel, Coffee } from "lucide-react";
+import { ApplicationForm } from "@/components/ApplicationForm";
 
 interface TravelCard {
   id: number;
@@ -46,6 +47,7 @@ const CardDetail = () => {
   const navigate = useNavigate();
   const [card, setCard] = useState<TravelCard | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
 
   useEffect(() => {
     console.log('🔄 useEffect triggered with cardId:', cardId);
@@ -144,6 +146,10 @@ const CardDetail = () => {
     } else {
       return `₹${commission}`;
     }
+  };
+
+  const handleApplyNow = () => {
+    setIsApplicationFormOpen(true);
   };
 
   if (loading) {
@@ -361,7 +367,7 @@ const CardDetail = () => {
                 {/* Apply Button */}
                 <Button 
                   className="w-full lg:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-8 text-lg"
-                  onClick={() => window.open('#', '_blank')}
+                  onClick={handleApplyNow}
                 >
                   Apply Now & Earn Your Reward! 🚀
                 </Button>
@@ -453,12 +459,19 @@ const CardDetail = () => {
           </p>
           <Button 
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 text-lg"
-            onClick={() => window.open('#', '_blank')}
+            onClick={handleApplyNow}
           >
             Apply Now & Start Saving! 💫
           </Button>
         </div>
       </div>
+      
+      {/* Application Form Dialog */}
+      <ApplicationForm
+        isOpen={isApplicationFormOpen}
+        onClose={() => setIsApplicationFormOpen(false)}
+        cardName={card?.name || 'Travel Card'}
+      />
     </div>
   );
 };

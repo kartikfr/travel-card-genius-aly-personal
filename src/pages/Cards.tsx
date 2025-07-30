@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Star, CreditCard, IndianRupee, ExternalLink, Filter, Search, ArrowLeft } from "lucide-react";
+import { ApplicationForm } from "@/components/ApplicationForm";
 
 interface TravelCard {
   id: number;
@@ -33,6 +34,8 @@ const Cards = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("all");
   const [selectedFeeRange, setSelectedFeeRange] = useState("all");
+  const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
 
   useEffect(() => {
     fetchAllCards();
@@ -121,6 +124,11 @@ const Cards = () => {
     } else {
       return `₹${commission} Reward`;
     }
+  };
+
+  const handleApplyNow = (card: any) => {
+    setSelectedCard(card);
+    setIsApplicationFormOpen(true);
   };
 
   if (loading) {
@@ -294,7 +302,7 @@ const Cards = () => {
                 <div className="space-y-2">
                   <Button 
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-2 text-sm"
-                    onClick={() => window.open('#', '_blank')}
+                    onClick={() => handleApplyNow(card)}
                   >
                     Apply Now 🚀
                   </Button>
@@ -325,6 +333,13 @@ const Cards = () => {
           </div>
         )}
       </div>
+      
+      {/* Application Form Dialog */}
+      <ApplicationForm
+        isOpen={isApplicationFormOpen}
+        onClose={() => setIsApplicationFormOpen(false)}
+        cardName={selectedCard?.name || 'Travel Card'}
+      />
     </div>
   );
 };

@@ -21,6 +21,7 @@ import {
   Zap
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { ApplicationForm } from "@/components/ApplicationForm";
 
 const CardBreakdown = () => {
   const location = useLocation();
@@ -28,6 +29,8 @@ const CardBreakdown = () => {
   const [expandedLevels, setExpandedLevels] = useState<{ [key: string]: boolean }>({});
   const [expandedCards, setExpandedCards] = useState<{ [key: string]: boolean }>({});
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
 
   const { cards = [], userPreferences, selectedCardIndex = 0 } = location.state || {};
 
@@ -166,6 +169,11 @@ const CardBreakdown = () => {
       grouped[option.method].push(option);
     });
     return grouped;
+  };
+
+  const handleApplyNow = (card?: any) => {
+    setSelectedCard(card || cards[0]);
+    setIsApplicationFormOpen(true);
   };
 
   if (!cards || cards.length === 0) {
@@ -705,7 +713,7 @@ const CardBreakdown = () => {
                   <div className="text-center pt-4">
                     <Button 
                       className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300"
-                      onClick={() => window.open('#', '_blank')}
+                      onClick={() => handleApplyNow(card)}
                     >
                       {card.commission ? `Apply now and earn ₹${card.commission}` : 'Apply Now'}
                     </Button>
@@ -730,12 +738,19 @@ const CardBreakdown = () => {
           </Button>
           <Button 
             className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 px-8 text-lg"
-            onClick={() => window.open('#', '_blank')}
+            onClick={() => handleApplyNow()}
           >
             Apply for Top Card 💰
           </Button>
         </div>
       </div>
+      
+      {/* Application Form Dialog */}
+      <ApplicationForm
+        isOpen={isApplicationFormOpen}
+        onClose={() => setIsApplicationFormOpen(false)}
+        cardName={selectedCard?.name || selectedCard?.card_name || 'Travel Card'}
+      />
     </div>
   );
 };
