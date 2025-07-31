@@ -371,6 +371,14 @@ const CardDetail = () => {
                 >
                   Apply Now & Earn Your Reward! 🚀
                 </Button>
+                
+                {/* Claim Reward Button */}
+                <Button 
+                  className="w-full lg:w-auto bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 px-8 text-lg mt-3"
+                  onClick={() => navigate('/claim-reward')}
+                >
+                  Claim Your Reward Now! 🎁
+                </Button>
               </div>
             </div>
           </CardHeader>
@@ -457,12 +465,20 @@ const CardDetail = () => {
           <p className="text-gray-300 mb-6">
             Join thousands of smart travelers who are already saving big with this card!
           </p>
-          <Button 
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 text-lg"
-            onClick={handleApplyNow}
-          >
-            Apply Now & Start Saving! 💫
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 text-lg"
+              onClick={handleApplyNow}
+            >
+              Apply Now & Start Saving! 💫
+            </Button>
+            <Button 
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-4 px-8 text-lg"
+              onClick={() => navigate('/claim-reward')}
+            >
+              Claim Your Reward Now! 🎁
+            </Button>
+          </div>
         </div>
       </div>
       

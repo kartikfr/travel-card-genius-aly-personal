@@ -185,18 +185,26 @@ export const Footer = () => {
 
         {/* Bottom Section */}
         <div className="mt-16 pt-8 border-t border-white/10">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-gray-400 text-sm">
-              © 2024 Aly Hajiani. All rights reserved. Powered by CashKaro.
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-6 lg:space-y-0">
+            {/* Copyright and Affiliate Disclosure */}
+            <div className="flex-1 lg:max-w-2xl">
+              <div className="text-gray-400 text-sm leading-relaxed">
+                © 2025 Aly Hajiani. All rights reserved. Powered by CashKaro.
+              </div>
+              <div className="text-gray-400 text-sm leading-relaxed mt-1">
+                Affiliate Disclosure: We may earn commission from qualifying purchases made through our links. This doesn't affect your costs.
+              </div>
             </div>
             
+            {/* Made with love */}
             <div className="flex items-center space-x-1 text-gray-400 text-sm">
               <span>Made with</span>
               <Heart className="h-4 w-4 text-red-400 fill-red-400" />
               <span>for travelers</span>
             </div>
             
-            <div className="flex space-x-6 text-sm text-gray-400">
+            {/* Legal Links */}
+            <div className="flex flex-wrap gap-4 lg:gap-6 text-sm text-gray-400">
               <button className="hover:text-white transition-colors">Privacy Policy</button>
               <button className="hover:text-white transition-colors">Terms of Service</button>
               <button className="hover:text-white transition-colors">Disclaimer</button>

@@ -39,11 +39,20 @@ const Cards = () => {
 
   useEffect(() => {
     fetchAllCards();
+    // Smooth scroll to top when component mounts
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
     filterCards();
   }, [cards, searchTerm, selectedBrand, selectedFeeRange]);
+
+  // Separate effect for smooth scrolling on search/filter changes
+  useEffect(() => {
+    if (cards.length > 0 && (searchTerm || selectedBrand !== "all" || selectedFeeRange !== "all")) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [searchTerm, selectedBrand, selectedFeeRange, cards.length]);
 
   const fetchAllCards = async () => {
     try {
@@ -167,9 +176,23 @@ const Cards = () => {
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-3">
             Your Complete Travel Card Collection 🎯
           </h1>
-          <p className="text-lg text-gray-300">
+          <p className="text-lg text-gray-300 mb-6">
             {filteredCards.length} Amazing Cards Ready to Transform Your Travel Experience!
           </p>
+          
+          {/* Claim Reward CTA */}
+          <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg p-6 border border-green-400/30">
+            <h3 className="text-xl font-bold text-white mb-2">Already Applied for a Card? 🎁</h3>
+            <p className="text-gray-300 mb-4">
+              Claim your exclusive reward by verifying your application!
+            </p>
+            <Button 
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 px-8 text-lg"
+              onClick={() => navigate('/claim-reward')}
+            >
+              Claim Your Reward Now! 🎁
+            </Button>
+          </div>
         </div>
 
         {/* Filters */}

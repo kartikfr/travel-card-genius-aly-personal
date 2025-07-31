@@ -1,8 +1,11 @@
 
 import { Button } from "@/components/ui/button";
-import { Plane, MapPin, Star } from "lucide-react";
+import { Plane, MapPin, Star, Gift } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const Hero = () => {
+  const navigate = useNavigate();
+  
   const scrollToCardSelection = () => {
     const element = document.getElementById('card-selection');
     element?.scrollIntoView({ behavior: 'smooth' });
@@ -10,6 +13,17 @@ export const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Top-right Claim Reward Button */}
+      <div className="absolute top-6 right-6 z-20">
+        <Button 
+          onClick={() => navigate('/claim-reward')}
+          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded-full text-sm transition-all duration-300 transform hover:scale-105 hover:shadow-2xl backdrop-blur-sm border border-green-400/30"
+        >
+          <Gift className="mr-2 h-4 w-4" />
+          Claim Your Reward Now! 🎁
+        </Button>
+      </div>
+
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
         <div className="absolute inset-0 opacity-50" style={{

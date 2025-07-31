@@ -8,6 +8,7 @@ import Cards from "./pages/Cards";
 import CardDetail from "./pages/CardDetail";
 import CardBreakdown from "./pages/CardBreakdown";
 import Offers from "./pages/Offers";
+import ClaimReward from "./pages/ClaimReward";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/card/:cardId" element={<CardDetail />} />
           <Route path="/card-breakdown" element={<CardBreakdown />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/claim-reward" element={<ClaimReward />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
